@@ -6,22 +6,29 @@ import { auth } from './firebase';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SignIn } from './src/screens/SignIn';
-import { NativeBaseProvider, View } from 'native-base';
+import { NativeBaseProvider } from 'native-base';
 import { ContextWrapper } from './src/context/ContextWrapper';
 import { Profile } from './src/screens/Profile';
 import { GlobalContext } from './src/context/Context';
 import { ROUTE } from './src/constants/navigation';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { Chats } from './src/screens/Chats';
+import { Photo } from './src/screens/Photo';
+import { Ionicons } from '@expo/vector-icons';
+import { Contacts } from './src/screens/Contacts';
 
 LogBox.ignoreLogs([
   'Setting a timer',
   'AsyncStorage has been extracted from react-native core and will be removed in a future release.',
 ]);
 
+const Stack = createStackNavigator();
+const Tab = createMaterialTopTabNavigator();
+
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const Stack = createStackNavigator();
   const {
     theme: { colors },
   } = useContext(GlobalContext);
@@ -65,6 +72,11 @@ export default function App() {
               name={ROUTE.HOME}
               component={Home}
             />
+            <Stack.Screen
+              options={{ title: 'Select Contacts' }}
+              name={ROUTE.CONTACTS}
+              component={Contacts}
+            />
           </Stack.Navigator>
         )}
         <StatusBar />
@@ -74,10 +86,36 @@ export default function App() {
 }
 
 const Home = () => {
+  const {
+    theme: { colors },
+  } = useContext(GlobalContext);
   return (
-    <View>
-      <Text>Hi Home</Text>
-    </View>
+    <Tab.Navigator
+      initialRouteName={ROUTE.CHATS}
+      screenOptions={{
+        tabBarShowIcon: true,
+        tabBarLabelStyle: {
+          color: colors.white,
+        },
+        tabBarIndicatorStyle: {
+          backgroundColor: colors.white,
+        },
+        tabBarStyle: {
+          backgroundColor: colors.foreground,
+        },
+      }}
+    >
+      <Tab.Screen
+        options={{
+          tabBarLabel: () => (
+            <Ionicons name='camera' size={20} color={colors.white} />
+          ),
+        }}
+        name={ROUTE.PHOTO}
+        component={Photo}
+      />
+      <Tab.Screen name={ROUTE.CHATS} component={Chats} />
+    </Tab.Navigator>
   );
 };
 

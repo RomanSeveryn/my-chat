@@ -2,4 +2,8 @@ export const ROUTE = {
   HOME: 'HOME',
   SIGNIN: 'SIGNIN',
   PROFILE: 'PROFILE',
+  CHATS: 'CHATS',
+  PHOTO: 'PHOTO',
+  CONTACTS: 'CONTACTS',
+  CHAT: 'CHAT',
 };
