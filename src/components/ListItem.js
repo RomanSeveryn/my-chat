@@ -4,6 +4,7 @@ import { GlobalContext } from '../context/Context';
 import { Text, TouchableOpacity } from 'react-native';
 import { Col, Grid, Row } from 'react-native-easy-grid';
 import { Avatar } from './Avatar';
+import { ROUTE } from '../constants/navigation';
 
 export const ListItem = ({
   type,
@@ -18,11 +19,13 @@ export const ListItem = ({
   const {
     theme: { colors },
   } = useContext(GlobalContext);
+
+  const navigate = () => {
+    navigation.navigate(ROUTE.CHAT, { user, room, image });
+  };
+
   return (
-    <TouchableOpacity
-      style={{ height: 80, ...style }}
-      onPress={() => navigation.navigate(ROUTE.CHAT, { user, room, image })}
-    >
+    <TouchableOpacity style={{ height: 80, ...style }} onPress={navigate}>
       <Grid style={{ maxHeight: 80 }}>
         <Col
           style={{ width: 80, alignItems: 'center', justifyContent: 'center' }}
