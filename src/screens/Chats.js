@@ -5,6 +5,7 @@ import { GlobalContext } from '../context/Context';
 import { collection, onSnapshot, query, where } from '@firebase/firestore';
 import { ContactsFloatingIcon } from '../components/ContactsFloatingIcon';
 import { useContacts } from '../hooks/useContacts';
+import { ListItem } from '../components/ListItem';
 
 export const Chats = () => {
   const { currentUser } = auth;
@@ -39,6 +40,16 @@ export const Chats = () => {
   return (
     <View flex={1} p={5} pr={10}>
       <Text>Chats</Text>
+      {rooms.map((room) => (
+        <ListItem
+          type='chat'
+          description={room.lastMessage.text}
+          key={room.id}
+          room={room}
+          time={room.lastMessage.createdAt}
+          user={getUserB(room.userB, contacts)}
+        />
+      ))}
       <ContactsFloatingIcon />
     </View>
   );

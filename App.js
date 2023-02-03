@@ -1,5 +1,4 @@
 import { LogBox, StatusBar, Text } from 'react-native';
-import { useAssets } from 'expo-asset';
 import { useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
@@ -7,7 +6,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SignIn } from './src/screens/SignIn';
 import { NativeBaseProvider } from 'native-base';
-import { ContextWrapper } from './src/context/ContextWrapper';
 import { Profile } from './src/screens/Profile';
 import { GlobalContext } from './src/context/Context';
 import { ROUTE } from './src/constants/navigation';
@@ -16,6 +14,8 @@ import { Chats } from './src/screens/Chats';
 import { Photo } from './src/screens/Photo';
 import { Ionicons } from '@expo/vector-icons';
 import { Contacts } from './src/screens/Contacts';
+import { Chat } from './src/screens/Chat';
+import { ChatHeader } from './src/components/ChatHeader';
 
 LogBox.ignoreLogs([
   'Setting a timer',
@@ -77,6 +77,11 @@ export default function App() {
               name={ROUTE.CONTACTS}
               component={Contacts}
             />
+            <Stack.Screen
+              options={{ headerTitle: (props) => <ChatHeader {...props} /> }}
+              name={ROUTE.CHAT}
+              component={Chat}
+            />
           </Stack.Navigator>
         )}
         <StatusBar />
@@ -116,24 +121,5 @@ const Home = () => {
       />
       <Tab.Screen name={ROUTE.CHATS} component={Chats} />
     </Tab.Navigator>
-  );
-};
-
-const Main = () => {
-  const [assets] = useAssets(
-    require('./assets/icon-square.png'),
-    require('./assets/chatbg.png'),
-    require('./assets/user-icon.png'),
-    require('./assets/welcome-img.png'),
-  );
-
-  if (!assets) {
-    return <Text>Loading ...</Text>;
-  }
-
-  return (
-    <ContextWrapper>
-      <App />
-    </ContextWrapper>
   );
 };
